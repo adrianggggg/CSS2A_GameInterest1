@@ -14,7 +14,7 @@ private:
     double monsterHP;
 public:
     Monster();
-    Monster(string name_);
+    Monster(string name_, string type_, int attack_, int special_attack_, double defense_);
 
     string getMonsterName() const;
 
@@ -44,19 +44,28 @@ public:
 
 void titleScreen();
 string nameSelection();
-void monsterSelection();
+void monsterSelection(Player& object_);
+void monsterList();
 
 int main()
 {
-    Monster* ptrMonster = new Monster("Rat");
-    Monster* ptrMonster;
     titleScreen();
+
     Player player1(nameSelection());
 
+    monsterSelection(player1);
 
+    cout << player1.getPlayerName() << endl;
 
-    cout << player1.getPlayerName();
-    cout << ptrMonster -> getMonsterName();
+    vector<Monster> objectTrial;
+
+    objectTrial = player1.getMonsterInventory();
+
+    for(int i = 0; i < 3; i++)
+    {
+        cout << objectTrial[i].getMonsterName();
+    }
+
     return 0;
 }
 
@@ -105,14 +114,15 @@ Monster::Monster()
     monsterAttackSpecial = 0;
     monsterDefense = 0;
 }
-Monster::Monster(string name_)
+
+Monster::Monster(string name_, string type_, int attack_, int special_attack_, double defense_)
 {
     monsterName = name_;
-    monsterType = "NA";
-    monsterHP = 0;
-    monsterAttack = 0;
-    monsterAttackSpecial = 0;
-    monsterDefense = 0;
+    monsterType = type_;
+    monsterAttack = attack_;
+    monsterAttackSpecial = special_attack_;
+    monsterDefense = defense_;
+    monsterHP = 100;
 }
 
 // getters
@@ -139,7 +149,7 @@ void Monster::setMonsterSpecialAttack(double special_attack_)
 
 void Monster::setMonsterDefense(double defense_)
 {
-    monsterDefense = defense_
+    monsterDefense = defense_;
 }
 
 void Monster::setMonsterHP(double hp_)
@@ -150,7 +160,9 @@ void Monster::setMonsterHP(double hp_)
 /* functions */
 void titleScreen()
 {
-    cout << "MONSTERS" << endl;
+    cout << "**********\n";
+    cout << "*MONSTERS*\n";
+    cout << "**********\n\n";
 }
 
 string nameSelection()
@@ -160,22 +172,83 @@ string nameSelection()
     cout << "Enter your character's name: ";
     cin >> userName;
 
+    cout << "\n";
+
     return userName;
 }
 
-void monsterSelection()
+void monsterSelection(Player& object_)
 {
-    switch(userChoice_)
+    monsterList();
+
+    for(int i = 0; i < 3; i++)
     {
-    case(1):
-    case(2):
-    case(3):
-    case(4):
+        int* ptrChoice1_ = new int();
+
+        cout << "[" << i + 1 << "] Enter your choice: ";
+        cin >> *ptrChoice1_;
+
+        switch(*ptrChoice1_)
+        {
+        case(1):
+            {
+                delete ptrChoice1_;
+
+                Monster* ptrChoice2_ = new Monster("Fish", "Earth", 20, 35, 20);
+
+                object_.setMonsterInventory(*ptrChoice2_);
+
+                delete ptrChoice2_;
+
+                break;
+            }
+        case(2):
+            {
+                delete ptrChoice1_;
+
+                Monster* ptrChoice2_ = new Monster("Worm", "Earth", 15, 45, 35);
+
+                object_.setMonsterInventory(*ptrChoice2_);
+
+                delete ptrChoice2_;
+
+                break;
+            }
+        case(3):
+            {
+                delete ptrChoice1_;
+
+                Monster* ptrChoice2_ = new Monster("Bird", "Fire", 30, 35, 10);
+
+                object_.setMonsterInventory(*ptrChoice2_);
+
+                delete ptrChoice2_;
+        break;
+            }
+        default:
+            break;
+        }
     }
+
 }
 
 void monsterList()
 {
-    cout << "1. Monster Name: Rat\n";
-    cout <<
+    cout << "1. Monster Name: Fish\n";
+    cout << "           Type: Earth\n";
+    cout << "         Attack: 20\n";
+    cout << " Special Attack: 35\n";
+    cout << "        Defense: 20\n\n";
+
+    cout << "2. Monster Name: Worm\n";
+    cout << "           Type: Earth\n";
+    cout << "         Attack: 15\n";
+    cout << " Special Attack: 45\n";
+    cout << "        Defense: 35\n\n";
+
+    cout << "3. Monster Name: Bird\n";
+    cout << "           Type: Fire\n";
+    cout << "         Attack: 30\n";
+    cout << " Special Attack: 35\n";
+    cout << "        Defense: 10\n\n";
 }
