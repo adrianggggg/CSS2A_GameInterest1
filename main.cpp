@@ -1,51 +1,16 @@
 #include <iostream>
 #include <vector>
+#include "Monster.h"
+#include "Player.h"
+#include "BattleScreen.h"
 
 using namespace std;
-
-class Monster
-{
-private:
-    string monsterName;
-    string monsterType;
-    double monsterAttack;
-    double monsterAttackSpecial;
-    double monsterDefense;
-    double monsterHP;
-public:
-    Monster();
-    Monster(string name_, string type_, int attack_, int special_attack_, double defense_);
-
-    string getMonsterName() const;
-
-    void setMonsterHP(double hp_);
-    void setMonsterType(double type_);
-    void setMonsterAttack(double attack_);
-    void setMonsterSpecialAttack(double special_attack_);
-    void setMonsterDefense(double defense_);
-};
-
-class Player
-{
-private:
-    string playerName;
-    vector<Monster> monsterInventory;
-public:
-    Player();
-    Player(string name_);
-
-    string getPlayerName() const;
-    vector<Monster> getMonsterInventory() const;
-
-    void setPlayerName(string name_);
-    void setMonsterInventory(Monster object_);
-
-};
 
 void titleScreen();
 string nameSelection();
 void monsterSelection(Player& object_);
 void monsterList();
+void battleEncounter(Player& object1_, Monster& object2_);
 
 int main()
 {
@@ -55,106 +20,15 @@ int main()
 
     monsterSelection(player1);
 
-    cout << player1.getPlayerName() << endl;
+    cout << endl;
 
-    vector<Monster> objectTrial;
+    Monster trial2("Amogus", "Fire", 12, 24, 12);
 
-    objectTrial = player1.getMonsterInventory();
+    battleEncounter(player1, trial2);
 
-    for(int i = 0; i < 3; i++)
-    {
-        cout << objectTrial[i].getMonsterName();
-    }
+    cout << trial2.getMonsterHP();
 
     return 0;
-}
-
-/* Player */
-// constructors
-Player::Player()
-{
-    playerName = "NA";
-}
-
-Player::Player(string name_)
-{
-    playerName = name_;
-}
-
-// getters
-string Player::getPlayerName() const
-{
-    return playerName;
-}
-
-vector<Monster> Player::getMonsterInventory() const
-{
-    return monsterInventory;
-}
-
-// setters
-void Player::setPlayerName(string name_)
-{
-    playerName = name_;
-}
-
-void Player::setMonsterInventory(Monster object_)
-{
-    monsterInventory.push_back(object_);
-}
-
-/* Monster */
-//constructors
-Monster::Monster()
-{
-    monsterName = "NA";
-    monsterType = "NA";
-    monsterHP = 0;
-    monsterAttack = 0;
-    monsterAttackSpecial = 0;
-    monsterDefense = 0;
-}
-
-Monster::Monster(string name_, string type_, int attack_, int special_attack_, double defense_)
-{
-    monsterName = name_;
-    monsterType = type_;
-    monsterAttack = attack_;
-    monsterAttackSpecial = special_attack_;
-    monsterDefense = defense_;
-    monsterHP = 100;
-}
-
-// getters
-string Monster::getMonsterName() const
-{
-    return monsterName;
-}
-
-// setters
-void Monster::setMonsterType(double type_)
-{
-    monsterType = type_;
-}
-
-void Monster::setMonsterAttack(double attack_)
-{
-    monsterAttack = attack_;
-}
-
-void Monster::setMonsterSpecialAttack(double special_attack_)
-{
-    monsterAttackSpecial = special_attack_;
-}
-
-void Monster::setMonsterDefense(double defense_)
-{
-    monsterDefense = defense_;
-}
-
-void Monster::setMonsterHP(double hp_)
-{
-    monsterHP = hp_;
 }
 
 /* functions */
@@ -185,7 +59,7 @@ void monsterSelection(Player& object_)
     {
         int* ptrChoice1_ = new int();
 
-        cout << "[" << i + 1 << "] Enter your choice: ";
+        cout << "Enter choice "<< i + 1 <<": ";
         cin >> *ptrChoice1_;
 
         switch(*ptrChoice1_)
@@ -251,4 +125,33 @@ void monsterList()
     cout << "         Attack: 30\n";
     cout << " Special Attack: 35\n";
     cout << "        Defense: 10\n\n";
+}
+
+void battleEncounter(Player& object1_, Monster& object2_)
+{
+    cout << "Encounter!\n";
+    Monster trial1 = object1_.getMonsterInventory();
+
+    BattleScreen battleObject(trial1, object2_);
+
+    while(trial1.getMonsterHP() > 0 && object2_.getMonsterHP() > 0)
+    {
+        battleObject.battleUI();
+        switch(battleObject.battleMenu())
+        {
+        case(1):
+            battleObject.dealDamage();
+            trial1 = battleObject.getToAttack();
+            object1_.setMonster(battleObject.getToAttack());
+            object2_ = battleObject.getToDefend();
+            break;
+        case(2):
+            break;
+        case(3):
+            break;
+        default:
+            battleObject.battleUI();
+            break;
+        }
+    }
 }
