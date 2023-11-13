@@ -9,19 +9,19 @@ using namespace std;
 // constructor
 BattleScreen::BattleScreen(Monster toAttack_, Monster toDefend_)
 {
-    toAttack = toAttack_;
-    toDefend = toDefend_;
+    attackerObject = toAttack_;
+    defenderObject = toDefend_;
 }
 
 // setters
-Monster BattleScreen::getToAttack() const
+Monster BattleScreen::getAttacker() const
 {
-    return toAttack;
+    return attackerObject;
 }
 
-Monster BattleScreen::getToDefend() const
+Monster BattleScreen::getDefender() const
 {
-    return toDefend;
+    return defenderObject;
 }
 
 // member functions
@@ -29,8 +29,8 @@ int BattleScreen::battleMenu()
 {
     int userChoice_;
     cout << "[1] Attack\n";
-    cout << "[2] Defend\n";
-    cout << "[3] Special Attack\n";
+    cout << "[2] Special Attack\n";
+    cout << "[3] Defend\n";
     cout << "Select: ";
     cin >> userChoice_;
 
@@ -38,43 +38,30 @@ int BattleScreen::battleMenu()
 
 }
 
-
-void BattleScreen::dealDamage()
+void BattleScreen::dealAttack()
 {
-    toDefend.setMonsterHP(toDefend.getMonsterHP() - toAttack.getMonsterAttack());
+    defenderObject.setMonsterHP(defenderObject.getMonsterHP() - attackerObject.getMonsterAttack());
 
 }
 
-/*
+void BattleScreen::dealSpecialAttack()
 {
-    if(toAttack -> getMonsterType() == "Water" && toDefend -> getMonsterType() == "Fire")
-    {
-        toDefend -> setMonsterHP((toAttack -> getMonsterAttack()*1.25));
-    }
-    else if(toAttack -> getMonsterType() == "Fire" && toDefend -> getMonsterType() == "Earth")
-    {
-        toDefend -> setMonsterHP((toAttack -> getMonsterAttack()*1.25));
-    }
-    else if(toAttack -> getMonsterType() == "Earth" && toDefend -> getMonsterType() == "Water")
-    {
-        toDefend -> setMonsterHP((toAttack -> getMonsterAttack()*1.25));
-    }
-    else
-    {
-        *toDefend.setMonsterHP((*toAttack.getMonsterAttack()*1));
-    }
-
+    defenderObject.setMonsterHP(defenderObject.getMonsterHP() - attackerObject.getMonsterSpecialAttack());
 }
-*/
+
+void BattleScreen::dealDefense()
+{
+    attackerObject.setMonsterHP(attackerObject.getMonsterHP() + attackerObject.getMonsterDefense());
+}
 
 void BattleScreen::battleUI()
 {
     cout << "_______________________________________________________________________________\n";
-    cout << "\n                               Monster Name: " << toDefend.getMonsterName() << "\n";
-    cout << "                                   Monster HP: " << toDefend.getMonsterHP() << "\n";
-    cout << "Monster Name: " << toAttack.getMonsterName() << "\n";
-    cout << "  Monster HP: " << toAttack.getMonsterHP() << "\n";
-    cout << "________________________________________________________________________________\n\n";
+    cout << "\n                               Monster Name: " << defenderObject.getMonsterName() << "\n";
+    cout << "                                   Monster HP: " << defenderObject.getMonsterHP() << "\n";
+    cout << "Monster Name: " << attackerObject.getMonsterName() << "\n";
+    cout << "  Monster HP: " << attackerObject.getMonsterHP() << "\n";
+    cout << "_______________________________________________________________\n\n";
 }
 
 void dealDefense();

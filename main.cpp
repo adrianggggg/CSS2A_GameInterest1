@@ -103,7 +103,6 @@ void monsterSelection(Player& object_)
             break;
         }
     }
-
 }
 
 void monsterList()
@@ -137,20 +136,28 @@ void battleEncounter(Player& object1_, Monster& object2_)
     while(trial1.getMonsterHP() > 0 && object2_.getMonsterHP() > 0)
     {
         battleObject.battleUI();
+
         switch(battleObject.battleMenu())
         {
         case(1):
-            battleObject.dealDamage();
-            trial1 = battleObject.getToAttack();
-            object1_.setMonster(battleObject.getToAttack());
-            object2_ = battleObject.getToDefend();
+            battleObject.dealAttack();
+            trial1 = battleObject.getAttacker();
+            object1_.setMonster(battleObject.getAttacker());
+            object2_ = battleObject.getDefender();
             break;
         case(2):
+            battleObject.dealSpecialAttack();
+            trial1 = battleObject.getAttacker();
+            object1_.setMonster(battleObject.getAttacker());
+            object2_ = battleObject.getDefender();
             break;
         case(3):
+            battleObject.dealDefense();
+            trial1 = battleObject.getAttacker();
+            object1_.setMonster(battleObject.getAttacker());
+            object2_ = battleObject.getDefender();
             break;
         default:
-            battleObject.battleUI();
             break;
         }
     }

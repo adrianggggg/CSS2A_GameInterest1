@@ -4,16 +4,18 @@
 class BattleScreen
 {
 private:
-    Monster toAttack;
-    Monster toDefend;
+    Monster attackerObject;
+    Monster defenderObject;
 public:
     BattleScreen(Monster toAttack_, Monster toDefend_);
 
-    Monster getToAttack() const;
-    Monster getToDefend() const;
+    Monster getAttacker() const;
+    Monster getDefender() const;
 
     int battleMenu();
-    void dealDamage();
+    void dealAttack();
+    void dealSpecialAttack();
+    void dealDefense();
 
     void battleUI();
 };
