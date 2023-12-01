@@ -1,81 +1,71 @@
 #include <iostream>
-#include <string>
 #include <vector>
-#include "Monster.h"
-#include "Player.h"
-#include "BattleScreen.h"
+#include "Monster.hpp"
+#include "Player.hpp"
 
 /* Player */
-// constructors
+
+// constructor
 Player::Player()
 {
-    playerName = "NA";
-    monsterOfInterest = 0;
+    name = "NA";
 }
 
-Player::Player(std::string name_)
+Player::Player(string name_)
 {
-    playerName = name_;
-    monsterOfInterest = 0;
+    name = name_;
 }
-
 
 // getters
-std::string Player::getPlayerName() const
+string Player::getName() const
 {
-    return playerName;
+    return name;
 }
 
-Monster Player::getMonsterInventory()
+vector<Monster> Player::getMonsterInventory()
 {
-    int userChoice_;
-
-    for(int i = 0; i < 3; i++)
-    {
-        if(monsterInventory[i].getMonsterHP() > 0)
-        {
-            std::cout << "[" << i + 1 << "] Monster Name: " << monsterInventory[i].getMonsterName() << "\n";
-        }
-        else
-        {
-            std::cout << "Name: " << monsterInventory[i].getMonsterName() << " - OUT OF THE GAME\n";
-        }
-    }
-
-    std::cout << "Monster selection: ";
-    std::cin >> userChoice_;
-
-    while(1)
-    {
-        if(monsterInventory[userChoice_ - 1].getMonsterHP() > 0)
-        {
-            monsterOfInterest = userChoice_ - 1;
-            return monsterInventory[userChoice_ - 1];
-        }
-        else
-        {
-            std::cout << "Not an option!" << std::endl;
-        }
-    }
+    return monsterInventory;
 }
 
-int Player::getMonsterofInterest() const
+int Player::getSize() const
 {
-    return monsterOfInterest;
+    return monsterInventory.size();
 }
 
 // setters
-void Player::setPlayerName(std::string name_)
+void Player::setName(string name_)
 {
-    playerName = name_;
+    name = name_;
 }
 
-void Player::setMonsterInventory(Monster object_)
+// indexing
+void Player::addMonster(Monster objectMonster_)
 {
-    monsterInventory.push_back(object_);
+    monsterInventory.push_back(objectMonster_);
 }
 
-void Player::setMonster(Monster object_)
+void Player::removeMonster(Monster objectMonster_)
 {
-    monsterInventory[monsterOfInterest] = object_;
+    for(int i = 0; i < monsterInventory.size(); i++)
+    {
+        if(monsterInventory[i] == objectMonster_)
+        {
+            monsterInventory.erase(monsterInventory.begin()+i);
+            break;
+        }
+    }
+}
+
+void Player::displayAllMonster()
+{
+    for(int i = 0; i < monsterInventory.size(); i++)
+    {
+        cout << "[" << i+ 1 << "]" << endl;
+        cout << monsterInventory[i] << endl;
+    }
+}
+
+Monster Player::selectMonster(int index_)
+{
+    return monsterInventory[index_];
 }

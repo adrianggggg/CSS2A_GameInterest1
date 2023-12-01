@@ -1,164 +1,166 @@
 #include <iostream>
 #include <vector>
-#include "Monster.h"
-#include "Player.h"
-#include "BattleScreen.h"
+#include <ctime>
+#include <cstdlib>
+#include "Monster.hpp"
+#include "Player.hpp"
+#include "Battleground.hpp"
+#include "Opponent.hpp"
+#include "main.hpp"
 
 using namespace std;
 
+void opponentRandomizer(Opponent objectOpponent_[]);
+
 void titleScreen();
-string nameSelection();
-void monsterSelection(Player& object_);
-void monsterList();
-void battleEncounter(Player& object1_, Monster& object2_);
+void nameSelection(Player& objectPlayer_);
+void monsterSelection(Player& objectPlayer_);
+int monsterSpecificSelection(Player& objectPlayer_);
+
+void battleScreen();
+int battleSelection();
+void battleScreen();
 
 int main()
 {
+    Opponent opponents[5];
+    Player player1;
+
+    opponentRandomizer(opponents);  // randomizes a group of 5 opponents along with 3 random monsters
+
     titleScreen();
 
-    Player player1(nameSelection());
-
+    nameSelection(player1);
     monsterSelection(player1);
 
-    cout << endl;
+    Battleground battle1(player1, opponents[0]);
+    battleScreen();
+    battle1.chooseMonsterToFight();
+    battle1.battleLoop();
 
-    Monster trial2("Amogus", "Fire", 12, 24, 12);
 
-    battleEncounter(player1, trial2);
 
-    cout << trial2.getMonsterHP();
 
     return 0;
 }
 
-/* functions */
+// functions
+void opponentRandomizer(Opponent objectOpponent_[])
+{
+    Monster arrayMonster[6] =
+    {
+        Monster("Cat", "Fire", 10, 20, 10),
+        Monster("Mouse", "Fire", 10, 40, 10),
+        Monster("Bird", "Earth", 15, 20, 10),
+        Monster("Dog", "Earth", 30, 10, 10),
+        Monster("Fish", "Water", 5, 20, 60),
+        Monster("Worm", "Earth", 10, 30, 5)
+    };
+
+    string name[5] = { "Jerry", "Rick", "Morty", "Summer", "Beth" };
+
+    srand(time(0));
+
+    for(int i = 0; i < 5; i++)
+    {
+        objectOpponent_[i].setName(name[rand()% 6]);
+        for(int j = 0; j < 3; j++)
+        {
+            objectOpponent_[i].addMonster(arrayMonster[rand() % 6]);
+        }
+    }
+}
+
 void titleScreen()
 {
-    cout << "**********\n";
-    cout << "*MONSTERS*\n";
-    cout << "**********\n\n";
+    cout << "MONSTERS" << endl;
 }
 
-string nameSelection()
+void nameSelection(Player& objectPlayer_)
 {
-    string userName;
+    string userName_;
+
 
     cout << "Enter your character's name: ";
-    cin >> userName;
+    getline(cin, userName_);
 
-    cout << "\n";
-
-    return userName;
+    objectPlayer_.setName(userName_);
 }
 
-void monsterSelection(Player& object_)
+void monsterSelection(Player& objectPlayer_)
 {
-    monsterList();
+    int userChoice_;
+    string numberLetter[3] = { "first", "second", "third" };
 
-    for(int i = 0; i < 3; i++)
+    Monster arrayMonster[6] =
     {
-        int* ptrChoice1_ = new int();
+        Monster("Cat", "Fire", 10, 20, 10),
+        Monster("Mouse", "Fire", 10, 40, 10),
+        Monster("Bird", "Earth", 15, 20, 10),
+        Monster("Dog", "Earth", 30, 10, 10),
+        Monster("Fish", "Water", 5, 20, 60),
+        Monster("Worm", "Earth", 10, 30, 5)
+    };
 
-        cout << "Enter choice "<< i + 1 <<": ";
-        cin >> *ptrChoice1_;
+    Monster* objectMonsterPtr_ = new Monster();
 
-        switch(*ptrChoice1_)
+    for(int i = 0; i < 6; i++)
+    {
+        cout << "[" << i + 1 << "]" << endl;
+        cout << arrayMonster[i] << endl;
+    }
+
+    int userGate_ = 0;
+    while(userGate_ < 3)
+    {
+        cout << "Enter the # of your " << numberLetter[userGate_] << " monster: ";
+        cin >> userChoice_;
+
+        if(userChoice_ > 0 && userChoice_ <= 6)
         {
-        case(1):
-            {
-                delete ptrChoice1_;
+            *objectMonsterPtr_ = arrayMonster[userChoice_ - 1];
+            objectPlayer_.addMonster(*objectMonsterPtr_);
 
-                Monster* ptrChoice2_ = new Monster("Fish", "Earth", 20, 35, 20);
+            userGate_++;
+        }
+        else
+        {
+            cout << "Not possible!" << endl;
+        }
+    }
 
-                object_.setMonsterInventory(*ptrChoice2_);
+    delete objectMonsterPtr_;
+}
 
-                delete ptrChoice2_;
+int monsterSpecificSelection(Player& objectPlayer_)
+{
+    int userChoice_ = 0;
 
-                break;
-            }
-        case(2):
-            {
-                delete ptrChoice1_;
+    while(1)
+    {
+        cout << "Enter the # of the monster: ";
+        cin >> userChoice_;
 
-                Monster* ptrChoice2_ = new Monster("Worm", "Earth", 15, 45, 35);
-
-                object_.setMonsterInventory(*ptrChoice2_);
-
-                delete ptrChoice2_;
-
-                break;
-            }
-        case(3):
-            {
-                delete ptrChoice1_;
-
-                Monster* ptrChoice2_ = new Monster("Bird", "Fire", 30, 35, 10);
-
-                object_.setMonsterInventory(*ptrChoice2_);
-
-                delete ptrChoice2_;
-        break;
-            }
-        default:
-            break;
+        if(userChoice_ > 0 && userChoice_ <= objectPlayer_.getSize())
+        {
+            return userChoice_ - 1;
+        }
+        else
+        {
+            cout << "Not possible!" << endl;
         }
     }
 }
 
-void monsterList()
+void battleScreen()
 {
-    cout << "1. Monster Name: Fish\n";
-    cout << "           Type: Earth\n";
-    cout << "         Attack: 20\n";
-    cout << " Special Attack: 35\n";
-    cout << "        Defense: 20\n\n";
-
-    cout << "2. Monster Name: Worm\n";
-    cout << "           Type: Earth\n";
-    cout << "         Attack: 15\n";
-    cout << " Special Attack: 45\n";
-    cout << "        Defense: 35\n\n";
-
-    cout << "3. Monster Name: Bird\n";
-    cout << "           Type: Fire\n";
-    cout << "         Attack: 30\n";
-    cout << " Special Attack: 35\n";
-    cout << "        Defense: 10\n\n";
+    cout << "An opponent is approaching!" << endl;
 }
 
-void battleEncounter(Player& object1_, Monster& object2_)
+int battleSelection()
 {
-    cout << "Encounter!\n";
-    Monster trial1 = object1_.getMonsterInventory();
+    int userChoice_;
+    cin >> userChoice_;
 
-    BattleScreen battleObject(trial1, object2_);
-
-    while(trial1.getMonsterHP() > 0 && object2_.getMonsterHP() > 0)
-    {
-        battleObject.battleUI();
-
-        switch(battleObject.battleMenu())
-        {
-        case(1):
-            battleObject.dealAttack();
-            trial1 = battleObject.getAttacker();
-            object1_.setMonster(battleObject.getAttacker());
-            object2_ = battleObject.getDefender();
-            break;
-        case(2):
-            battleObject.dealSpecialAttack();
-            trial1 = battleObject.getAttacker();
-            object1_.setMonster(battleObject.getAttacker());
-            object2_ = battleObject.getDefender();
-            break;
-        case(3):
-            battleObject.dealDefense();
-            trial1 = battleObject.getAttacker();
-            object1_.setMonster(battleObject.getAttacker());
-            object2_ = battleObject.getDefender();
-            break;
-        default:
-            break;
-        }
-    }
+    return userChoice_;
 }

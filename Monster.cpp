@@ -1,86 +1,107 @@
 #include <iostream>
-#include <string>
 #include <vector>
-#include "Monster.h"
-#include "Player.h"
-#include "BattleScreen.h"
+#include "Monster.hpp"
 
+
+using namespace std;
 /* Monster */
-//constructors
+
+// constructor
 Monster::Monster()
 {
-    monsterName = "NA";
-    monsterType = "NA";
-    monsterHP = 0;
-    monsterAttack = 0;
-    monsterAttackSpecial = 0;
-    monsterDefense = 0;
+    name = "NA";
+    type = "NA";
+    attack = 0;
+    special_attack = 0;
+    defend = 0;
+    hp = 0;
 }
 
-Monster::Monster(std::string name_, std::string type_, int attack_, int special_attack_, double defense_)
+Monster::Monster(string name_, string type_, double attack_, double special_attack_, double defend_)
 {
-    monsterName = name_;
-    monsterType = type_;
-    monsterAttack = attack_;
-    monsterAttackSpecial = special_attack_;
-    monsterDefense = defense_;
-    monsterHP = 100;
+    name = name_;
+    type = type_;
+    attack = attack_;
+    special_attack = special_attack_;
+    defend = defend_;
+    hp = 100;
 }
-
 
 // getters
-std::string Monster::getMonsterName() const
+string Monster::getName() const
 {
-    return monsterName;
+    return name;
 }
-
-double Monster::getMonsterAttack() const
+string Monster::getType() const
 {
-    return monsterAttack;
+    return type;
 }
-
-double Monster::getMonsterSpecialAttack() const
+double Monster::getAttack() const
 {
-    return monsterAttackSpecial;
+    return attack;
 }
-
-double Monster::getMonsterDefense() const
+double Monster::getSpecialAttack() const
 {
-    return monsterDefense;
+    return special_attack;
 }
-
-double Monster::getMonsterHP() const
+double Monster::getDefend() const
 {
-    return monsterHP;
+    return defend;
 }
-
-std::string Monster::getMonsterType() const
+double Monster::getHP() const
 {
-    return monsterType;
+    return hp;
 }
 
 // setters
-void Monster::setMonsterType(std::string type_)
+void Monster::setName(string name_)
 {
-    monsterType = type_;
+    name = name_;
+}
+void Monster::setType(string type_)
+{
+    type = type_;
+}
+void Monster::setAttack(double attack_)
+{
+    attack = attack_;
+}
+void Monster::setSpecialAttack(double special_attack_)
+{
+    special_attack = special_attack_;
+}
+void Monster::setDefend(double defend_)
+{
+    defend = defend_;
+}
+void Monster::setHP(double hp_)
+{
+    hp = hp_;
 }
 
-void Monster::setMonsterAttack(double attack_)
+// iostream overload
+bool Monster::operator ==(const Monster& objectMonster_)
 {
-    monsterAttack = attack_;
+    return (this -> name == objectMonster_.getName());
 }
-
-void Monster::setMonsterSpecialAttack(double special_attack_)
+ostream& operator <<(ostream& out, const Monster& objectMonster_)
 {
-    monsterAttackSpecial = special_attack_;
-}
 
-void Monster::setMonsterDefense(double defense_)
-{
-    monsterDefense = defense_;
-}
+    out << objectMonster_.getName() << " - ";
 
-void Monster::setMonsterHP(double hp_)
-{
-    monsterHP = hp_;
+    if(objectMonster_.getHP() > 0)
+    {
+        out << "Ready to FIGHT!\n";
+    }
+    else
+    {
+        out << "Cannot FIGHT!\n";
+    }
+    out << objectMonster_.getType() << "\n";
+    out << objectMonster_.getHP() << "\n";
+    out << objectMonster_.getAttack() << "\n";
+    out << objectMonster_.getSpecialAttack() << "\n";
+    out << objectMonster_.getDefend() << "\n";
+
+    return out;
 }
