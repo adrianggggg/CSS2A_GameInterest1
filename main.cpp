@@ -59,6 +59,7 @@ int main()
 
             if(yes_noSelection() == true)
             {
+                cout << "You heal your party..." << endl << endl;
                 loopingCount++;
             }
             else
@@ -220,12 +221,12 @@ bool yes_noSelection()
 
     if(userChoice_ == 'Y' || userChoice_ == 'y')
     {
-        cout << endl << endl;
+        cout << endl;
         return 1;
     }
     else
     {
-        cout << endl << endl;
+        cout << endl;
         return 0;
     }
 }

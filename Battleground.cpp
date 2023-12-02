@@ -139,7 +139,7 @@ void Battleground::battleLoop()
             battleCheck();
             break;
         case 2:
-            cout << objectPlayerPtr -> getName() << "'s" << " uses their SPECIAL ATTACK!";
+            cout << objectPlayerPtr -> getName() << "'s " << objectPlayerMonsterPtr_-> getName() << " uses their SPECIAL ATTACK!";
             objectOpponentMonsterPtr_ -> setHP(objectOpponentMonsterPtr_ -> getHP() - getBattleSpecialAttack(objectPlayerMonsterPtr_, objectOpponentMonsterPtr_));
             battleCheck();
             break;
@@ -168,7 +168,7 @@ void Battleground::battleLoop()
             battleCheck();
             break;
         case 2:
-            cout << objectOpponentPtr -> getName() << "'s" << " uses their SPECIAL ATTACK!";
+            cout << objectOpponentPtr -> getName() << "'s " << objectOpponentMonsterPtr_-> getName() << " uses their SPECIAL ATTACK!";
             objectPlayerMonsterPtr_ -> setHP(objectPlayerMonsterPtr_ -> getHP() - getBattleSpecialAttack(objectOpponentMonsterPtr_, objectPlayerMonsterPtr_));
             battleCheck();
             break;
@@ -214,12 +214,12 @@ bool Battleground::battleResult()
 {
     if(objectPlayerPtr -> getSize() > 0 )
     {
-        cout << "Victory against " << objectOpponentPtr -> getName() << endl << endl;
+        cout << "Victory against " << objectOpponentPtr -> getName() << "!" << endl << endl;
         return true;
     }
     else
     {
-        cout << "Defeat by the hands " << objectOpponentPtr -> getName() << endl << endl;
+        cout << "Defeat by the hands " << objectOpponentPtr -> getName() << "!" << endl << endl;
         return false;
     }
 }
