@@ -89,12 +89,12 @@ void opponentRandomizer(Opponent objectOpponent_[])
 {
     Monster arrayMonster[6] =
     {
-        Monster("Cat", "Fire", 10, 20, 10),
-        Monster("Mouse", "Fire", 10, 40, 10),
-        Monster("Bird", "Earth", 15, 20, 10),
-        Monster("Dog", "Earth", 30, 10, 10),
-        Monster("Fish", "Water", 5, 20, 60),
-        Monster("Worm", "Earth", 10, 30, 5)
+        Monster("Aeroquack", "Wind", 20, 30, 10),
+        Monster("Zephyrtail", "Wind", 25, 25, 20),
+        Monster("Aquaquack", "Water", 20, 25, 20),
+        Monster("Torrentail", "Water", 30, 20, 10),
+        Monster("Saxoheat", "Fire", 20, 20, 5),
+        Monster("Charyuga", "Fire", 20, 20, 10)
     };
 
     string name[5] = { "Jerry", "Rick", "Morty", "Summer", "Beth" };
@@ -136,12 +136,12 @@ void monsterSelection(Player& objectPlayer_)
 
     Monster arrayMonster[6] =
     {
-        Monster("Cat", "Fire", 10, 20, 10),
-        Monster("Mouse", "Fire", 10, 40, 10),
-        Monster("Bird", "Earth", 15, 20, 10),
-        Monster("Dog", "Earth", 30, 10, 10),
-        Monster("Fish", "Water", 5, 20, 60),
-        Monster("Worm", "Earth", 10, 30, 5)
+        Monster("Aeroquack", "Wind", 20, 30, 10),
+        Monster("Zephyrtail", "Wind", 25, 25, 20),
+        Monster("Aquaquack", "Water", 20, 25, 20),
+        Monster("Torrentail", "Water", 30, 20, 10),
+        Monster("Saxoheat", "Fire", 20, 20, 5),
+        Monster("Charyuga", "Fire", 20, 20, 10)
     };
 
     Monster* objectMonsterPtr_ = new Monster();

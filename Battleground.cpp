@@ -1,5 +1,7 @@
 #include <iostream>
 #include <vector>
+#include <cstdlib>
+#include <ctime>
 #include "Monster.hpp"
 #include "Player.hpp"
 #include "Battleground.hpp"
@@ -29,6 +31,69 @@ Battleground::~Battleground()
     delete objectPlayerMonsterPtr_;
     delete objectOpponentMonsterPtr_;
 }
+
+// getters/modifiers
+double Battleground::getBattleAttack(Monster* objectMonsterAttack_, Monster* objectMonsterDefend_)
+{
+    if(objectMonsterAttack_ -> getType() == objectMonsterDefend_ -> getType())
+    {
+        cout << " Not very effective!" << endl << endl;
+        return (objectMonsterAttack_ -> getAttack() - (objectMonsterAttack_ -> getAttack()* 0.70));
+    }
+
+    else if(objectMonsterAttack_ -> getType() == "Water" && objectMonsterDefend_ -> getType() == "Fire")
+    {
+        cout << " Really effective!" << endl << endl;
+        return (objectMonsterAttack_ -> getAttack() + (objectMonsterAttack_ -> getAttack()* 0.10));
+    }
+    else if(objectMonsterAttack_ -> getType() == "Fire" && objectMonsterDefend_ -> getType() == "Water")
+    {
+        cout << " Not very effective!" << endl << endl;
+        return (objectMonsterAttack_ -> getAttack() - (objectMonsterAttack_ -> getAttack()* 0.60));
+    }
+
+    else if(objectMonsterAttack_ -> getType() == "Fire" && objectMonsterDefend_ -> getType() == "Wind")
+    {
+        cout << " Really effective!" << endl << endl;
+        return (objectMonsterAttack_ -> getAttack() + (objectMonsterAttack_ -> getAttack()* 0.10));
+    }
+    else if(objectMonsterAttack_ -> getType() == "Wind" && objectMonsterDefend_ -> getType() == "Fire")
+    {
+        cout << " Really effective!" << endl << endl;
+        return (objectMonsterAttack_ -> getAttack() - (objectMonsterAttack_ -> getAttack()* 0.60));
+    }
+
+    else
+    {
+        if(battleCriticalHit() == true)
+        {
+            cout << " Critical Hit!" << endl << endl;
+            return objectMonsterAttack_ -> getAttack() + (objectMonsterAttack_ -> getAttack())*1.35;
+        }
+        else
+        {
+            cout << endl << endl;
+            return objectMonsterAttack_ -> getAttack();
+        }
+    }
+}
+
+double Battleground::getBattleSpecialAttack(Monster* objectMonsterAttack_, Monster* objectMonsterDefend_)
+{
+    if(battleCriticalHit() == true)
+    {
+        cout << " Critical hit!" << endl << endl;
+        return (objectMonsterAttack_ -> getSpecialAttack())*1.3 + objectMonsterAttack_ -> getSpecialAttack();
+    }
+    else
+    {
+        cout << endl << endl;
+        return objectMonsterAttack_ -> getSpecialAttack();
+    }
+}
+
+
+
 void Battleground::choosePlayerMonsterToFight()
 {
     objectPlayerPtr -> displayAllMonster();
@@ -46,11 +111,12 @@ void Battleground::chooseOpponentMonsterToFight()
 void Battleground::battleInterface()
 {
     cout << "***************************************************************" << endl;
-
+    cout << "                                "; battleInventory(objectOpponentPtr -> getSize()); cout << endl;
     cout << "                                Monster: " << objectOpponentMonsterPtr_ -> getName() << endl;
     cout << "                                Type: " << objectOpponentMonsterPtr_ -> getType() << endl;
     cout << "                                HP: " << objectOpponentMonsterPtr_ -> getHP() << endl;
 
+    battleInventory(objectPlayerPtr -> getSize()); cout << endl;
     cout << "Monster: " << objectPlayerMonsterPtr_ -> getName() << endl;
     cout << "Type: " << objectPlayerMonsterPtr_ -> getType() << endl;
     cout << "HP: " << objectPlayerMonsterPtr_ -> getHP() << endl;
@@ -68,18 +134,18 @@ void Battleground::battleLoop()
         switch(battleSelection())
         {
         case 1:
-            objectOpponentMonsterPtr_ -> setHP(objectOpponentMonsterPtr_ -> getHP() - objectPlayerMonsterPtr_ -> getAttack());
-            cout << objectPlayerPtr -> getName() << "'s " << objectPlayerMonsterPtr_-> getName() << " ATTACKS!" << endl << endl;
+            cout << objectPlayerPtr -> getName() << "'s " << objectPlayerMonsterPtr_-> getName() << " ATTACKS!";
+            objectOpponentMonsterPtr_ -> setHP(objectOpponentMonsterPtr_ -> getHP() - getBattleAttack(objectPlayerMonsterPtr_, objectOpponentMonsterPtr_));
             battleCheck();
             break;
         case 2:
-            objectOpponentMonsterPtr_ -> setHP(objectOpponentMonsterPtr_ -> getHP() - objectPlayerMonsterPtr_ -> getSpecialAttack());
-            cout << objectPlayerPtr -> getName() << "'s" << " uses their SPECIAL ATTACK!" << endl << endl;
+            cout << objectPlayerPtr -> getName() << "'s" << " uses their SPECIAL ATTACK!";
+            objectOpponentMonsterPtr_ -> setHP(objectOpponentMonsterPtr_ -> getHP() - getBattleSpecialAttack(objectPlayerMonsterPtr_, objectOpponentMonsterPtr_));
             battleCheck();
             break;
         case 3:
+                        cout << objectPlayerPtr -> getName() << "'s" " REINFORCES their health!" << endl << endl;
             objectPlayerMonsterPtr_ -> setHP(objectPlayerMonsterPtr_ -> getHP() + objectPlayerMonsterPtr_ -> getDefend());
-            cout << objectPlayerPtr -> getName() << "'s" " REINFORCES their health!" << endl << endl;
             battleCheck();
             break;
         default:
@@ -97,13 +163,13 @@ void Battleground::battleLoop()
         switch(objectOpponentPtr -> randomChoice())
         {
         case 1:
-            objectPlayerMonsterPtr_ -> setHP(objectPlayerMonsterPtr_ -> getHP() - objectOpponentMonsterPtr_ -> getAttack());
-            cout << objectOpponentPtr -> getName() << "'s " << objectOpponentMonsterPtr_-> getName() << " ATTACKS!" << endl << endl;
+            cout << objectOpponentPtr -> getName() << "'s " << objectOpponentMonsterPtr_-> getName() << " ATTACKS!";
+            objectPlayerMonsterPtr_ -> setHP(objectPlayerMonsterPtr_ -> getHP() - getBattleAttack(objectOpponentMonsterPtr_, objectPlayerMonsterPtr_));
             battleCheck();
             break;
         case 2:
-            objectPlayerMonsterPtr_ -> setHP(objectPlayerMonsterPtr_ -> getHP() - objectOpponentMonsterPtr_ -> getSpecialAttack());
-            cout << objectOpponentPtr -> getName() << "'s" << " uses their SPECIAL ATTACK!" << endl << endl;
+            cout << objectOpponentPtr -> getName() << "'s" << " uses their SPECIAL ATTACK!";
+            objectPlayerMonsterPtr_ -> setHP(objectPlayerMonsterPtr_ -> getHP() - getBattleSpecialAttack(objectOpponentMonsterPtr_, objectPlayerMonsterPtr_));
             battleCheck();
             break;
         case 3:
@@ -156,5 +222,27 @@ bool Battleground::battleResult()
         cout << "Defeat by the hands " << objectOpponentPtr -> getName() << endl << endl;
         return false;
     }
+}
+
+void Battleground::battleInventory(int sizeMonster)
+{
+    for(int i = 0; i < sizeMonster; i++)
+    {
+        cout << "o ";
+    }
+}
+
+bool Battleground::battleCriticalHit()
+{
+    srand(time(0));
+
+    bool critChance_[10];
+
+    for(int i = 0; i < 10; i++)
+    {
+        critChance_[i] = rand() % 2;
+    }
+
+    return critChance_[rand() % 10];
 }
 

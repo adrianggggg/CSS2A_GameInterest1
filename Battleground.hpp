@@ -18,12 +18,19 @@ public:
     ~Battleground();
 
     // member functions
+    double getBattleAttack(Monster* objectMonsterAttack_, Monster* objectMonsterDefend_);
+    double getBattleSpecialAttack(Monster* objectMonsterAttack_, Monster* objectMonsterDefend_);
+
     void choosePlayerMonsterToFight();
     void chooseOpponentMonsterToFight();
+
     void battleLoop();
     void battleInterface();
     void battleCheck();
     bool battleResult();
+    void battleInventory(int sizeMonster);
+
+    bool battleCriticalHit();
 
 
 };
