@@ -35,46 +35,47 @@ Battleground::~Battleground()
 // getters/modifiers
 double Battleground::getBattleAttack(Monster* objectMonsterAttack_, Monster* objectMonsterDefend_)
 {
-    if(objectMonsterAttack_ -> getType() == objectMonsterDefend_ -> getType())
-    {
-        cout << " Not very effective!" << endl << endl;
-        return (objectMonsterAttack_ -> getAttack() - (objectMonsterAttack_ -> getAttack()* 0.70));
-    }
-
-    else if(objectMonsterAttack_ -> getType() == "Water" && objectMonsterDefend_ -> getType() == "Fire")
-    {
-        cout << " Really effective!" << endl << endl;
-        return (objectMonsterAttack_ -> getAttack() + (objectMonsterAttack_ -> getAttack()* 0.10));
-    }
-    else if(objectMonsterAttack_ -> getType() == "Fire" && objectMonsterDefend_ -> getType() == "Water")
-    {
-        cout << " Not very effective!" << endl << endl;
-        return (objectMonsterAttack_ -> getAttack() - (objectMonsterAttack_ -> getAttack()* 0.60));
-    }
-
-    else if(objectMonsterAttack_ -> getType() == "Fire" && objectMonsterDefend_ -> getType() == "Wind")
+    // Really effective
+    if
+    (
+        (objectMonsterAttack_ -> getType() == "Water" && objectMonsterDefend_ -> getType() == "Fire") ||
+        (objectMonsterAttack_ -> getType() == "Fire" && objectMonsterDefend_ -> getType() == "Wind") ||
+        (objectMonsterAttack_ -> getType() == "Wind" && objectMonsterDefend_ -> getType() == "Water")
+    )
     {
         cout << " Really effective!" << endl << endl;
-        return (objectMonsterAttack_ -> getAttack() + (objectMonsterAttack_ -> getAttack()* 0.10));
-    }
-    else if(objectMonsterAttack_ -> getType() == "Wind" && objectMonsterDefend_ -> getType() == "Fire")
-    {
-        cout << " Really effective!" << endl << endl;
-        return (objectMonsterAttack_ -> getAttack() - (objectMonsterAttack_ -> getAttack()* 0.60));
+        return (objectMonsterAttack_ -> getAttack() * 1.10);
     }
 
+    // Same type
+    else if
+    (
+        (objectMonsterAttack_ -> getType() == "Water" && objectMonsterDefend_ -> getType() == "Water") ||
+        (objectMonsterAttack_ -> getType() == "Fire" && objectMonsterDefend_ -> getType() == "Fire") ||
+        (objectMonsterAttack_ -> getType() == "Wind" && objectMonsterDefend_ -> getType() == "Wind")
+    )
+    {
+        cout << " Same type!" << endl << endl;
+        return (objectMonsterAttack_ -> getAttack());
+    }
+
+    // Not effective
+    else if
+    (
+        (objectMonsterAttack_ -> getType() == "Water" && objectMonsterDefend_ -> getType() == "Wind") ||
+        (objectMonsterAttack_ -> getType() == "Fire" && objectMonsterDefend_ -> getType() == "Water") ||
+        (objectMonsterAttack_ -> getType() == "Wind" && objectMonsterDefend_ -> getType() == "Fire")
+    )
+    {
+        cout << " Not effective..." << endl << endl;
+        return (objectMonsterAttack_ -> getAttack() * 0.30);
+    }
+
+    // error code
     else
     {
-        if(battleCriticalHit() == true)
-        {
-            cout << " Critical Hit!" << endl << endl;
-            return objectMonsterAttack_ -> getAttack() + (objectMonsterAttack_ -> getAttack())*1.35;
-        }
-        else
-        {
-            cout << endl << endl;
-            return objectMonsterAttack_ -> getAttack();
-        }
+        cout << "DEBUG: Error with Battleground::getBattleAttack()" << endl;
+        return 1;
     }
 }
 
@@ -83,12 +84,12 @@ double Battleground::getBattleSpecialAttack(Monster* objectMonsterAttack_, Monst
     if(battleCriticalHit() == true)
     {
         cout << " Critical hit!" << endl << endl;
-        return (objectMonsterAttack_ -> getSpecialAttack())*1.3 + objectMonsterAttack_ -> getSpecialAttack();
+        return (objectMonsterAttack_ -> getSpecialAttack())*1.3;
     }
     else
     {
         cout << endl << endl;
-        return objectMonsterAttack_ -> getSpecialAttack();
+        return (objectMonsterAttack_ -> getSpecialAttack());
     }
 }
 
@@ -144,7 +145,7 @@ void Battleground::battleLoop()
             battleCheck();
             break;
         case 3:
-                        cout << objectPlayerPtr -> getName() << "'s" " REINFORCES their health!" << endl << endl;
+            cout << objectPlayerPtr -> getName() << "'s" " REINFORCES their health!" << endl << endl;
             objectPlayerMonsterPtr_ -> setHP(objectPlayerMonsterPtr_ -> getHP() + objectPlayerMonsterPtr_ -> getDefend());
             battleCheck();
             break;
