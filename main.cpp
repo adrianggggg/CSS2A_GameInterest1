@@ -16,6 +16,7 @@ void titleScreen();
 void nameSelection(Player& objectPlayer_);
 void monsterSelection(Player& objectPlayer_);
 int monsterSpecificSelection(Player& objectPlayer_);
+
 bool yes_noSelection();
 
 void battleScreen(Opponent& objectOpponent_);
@@ -36,8 +37,9 @@ int main()
     monsterSelection(player1);
 
     int loopingCount = 0;
+    int victoryCount = 0;
 
-    while(loopingCount < 6)
+    while(loopingCount < 6) // less than six because there are 5 total random opponents
     {
         Battleground battleTime(player1, opponents[loopingCount]);
 
@@ -50,6 +52,7 @@ int main()
 
         if(battleTime.battleResult() == true) // if(battleTime.battleResult())
         {
+            victoryCount++;
             if(loopingCount == 5)
             {
                 userVictory = true;
@@ -59,7 +62,7 @@ int main()
 
             if(yes_noSelection() == true) // if(yes_noSelection())
             {
-                cout << "You heal your party..." << endl << endl;
+                cout << "You heal and tend to your party..." << endl << endl;
                 loopingCount++;
             }
             else
@@ -79,7 +82,7 @@ int main()
     }
     else
     {
-        cout << "You took out " << loopingCount + 1 << " of 5 opponents!" << endl;
+        cout << "You took out " << victoryCount << " of 5 opponents!" << endl;
     }
 
     return 0;

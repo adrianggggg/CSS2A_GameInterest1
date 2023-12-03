@@ -17,8 +17,6 @@ Opponent::Opponent() : Player()
 
 }
 
-
-
 // member functions
 Monster Opponent::selectMonster()
 {
@@ -30,6 +28,7 @@ Monster Opponent::selectMonster()
 int Opponent::randomChoice()
 {
     srand(time(0));
-    return rand() % 3 + 1;
+    int choiceWeigth[10] = { 1, 1, 1, 1, 2, 2, 2, 3, 3, 3 };
+    return choiceWeigth[rand() % 10]; // only three possible choices: 1 for attack, 2 for special attack, and 3 for defend
 }
 

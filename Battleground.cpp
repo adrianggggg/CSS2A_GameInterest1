@@ -59,6 +59,21 @@ double Battleground::getBattleAttack(Monster* objectMonsterAttack_, Monster* obj
     }
 
     // Same type -70% damage
+
+    // Really effective
+    if
+    (
+        (objectMonsterAttack_ -> getType() == "Water" && objectMonsterDefend_ -> getType() == "Fire") ||
+        (objectMonsterAttack_ -> getType() == "Fire" && objectMonsterDefend_ -> getType() == "Wind") ||
+        (objectMonsterAttack_ -> getType() == "Wind" && objectMonsterDefend_ -> getType() == "Water")
+    )
+    {
+        cout << " Really effective!" << endl << endl;
+        return (objectMonsterAttack_ -> getAttack() * 1.10);
+    }
+
+    // Same type
+
     else if
     (
         (objectMonsterAttack_ -> getType() == "Water" && objectMonsterDefend_ -> getType() == "Water") ||
@@ -67,10 +82,16 @@ double Battleground::getBattleAttack(Monster* objectMonsterAttack_, Monster* obj
     )
     {
         cout << " Same type!" << endl << endl;
+
         return (objectMonsterAttack_ -> getAttack() * 0.30 + critDamage);
     }
 
     // Not effective -60% damage
+        return (objectMonsterAttack_ -> getAttack());
+    }
+
+    // Not effective
+
     else if
     (
         (objectMonsterAttack_ -> getType() == "Water" && objectMonsterDefend_ -> getType() == "Wind") ||
@@ -79,7 +100,11 @@ double Battleground::getBattleAttack(Monster* objectMonsterAttack_, Monster* obj
     )
     {
         cout << " Not effective..." << endl << endl;
+
         return (objectMonsterAttack_ -> getAttack() * 0.40 + critDamage);
+=======
+        return (objectMonsterAttack_ -> getAttack() * 0.30);
+
     }
 
     // error code
@@ -95,13 +120,17 @@ double Battleground::getBattleSpecialAttack(Monster* objectMonsterAttack_, Monst
     if(battleCriticalHit() == true)
     {
         cout << " Critical hit!" << endl << endl;
+
         //return (objectMonsterAttack_ -> getSpecialAttack())*1.3 + objectMonsterAttack_ -> getSpecialAttack(); // this is 230% damage. Was +30% the intent?
         return (objectMonsterAttack_ -> getSpecialAttack() * 1.35); // this is +35% damage matching damage above. we should abstract crit into a function maybe?
+
+        return (objectMonsterAttack_ -> getSpecialAttack())*1.3;
+
     }
     else
     {
         cout << endl << endl;
-        return objectMonsterAttack_ -> getSpecialAttack();
+        return (objectMonsterAttack_ -> getSpecialAttack());
     }
 }
 
