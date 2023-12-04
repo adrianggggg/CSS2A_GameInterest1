@@ -12,19 +12,38 @@ Monster::Monster()
     name = "NA";
     type = "NA";
     attack = 0;
-    special_attack = 0;
-    defend = 0;
-    hp = 0;
+    health = 0;
+    MAX_HEALTH = 0;
 }
 
-Monster::Monster(string name_, string type_, double attack_, double special_attack_, double defend_)
+Monster::Monster(string name_, string type_)
 {
     name = name_;
     type = type_;
-    attack = attack_;
-    special_attack = special_attack_;
-    defend = defend_;
-    hp = 100;
+
+    if(type == "Water")
+    {
+        MAX_HEALTH = 175;
+        health = 175;
+        attack = 25;
+    }
+    else if(type == "Fire")
+    {
+        MAX_HEALTH = 100;
+        health = 100;
+        attack = 40;
+    }
+
+    else if(type == "Wind")
+    {
+        MAX_HEALTH = 30;
+        health = 30;
+        attack = 95;
+    }
+    else
+    {
+        cout << "error with Monster construction" << endl;
+    }
 }
 
 // getters
@@ -40,18 +59,42 @@ double Monster::getAttack() const
 {
     return attack;
 }
-double Monster::getSpecialAttack() const
+double Monster::getHealth() const
 {
-    return special_attack;
+    return health;
 }
-double Monster::getDefend() const
+double Monster::getMAX_HEALTH() const
 {
-    return defend;
+    return MAX_HEALTH;
 }
-double Monster::getHP() const
+
+string Monster::getAttackName(Monster* objectMonster_)
 {
-    return hp;
+    srand(time(0));
+    int chance_ = rand() % 3;
+
+    if(objectMonster_ -> getType() == "Fire")
+    {
+        string fireNames[3] = {" Sear", " Flamethrower", " Torch"};
+        return fireNames[chance_];
+    }
+    else if(objectMonster_ -> getType() == "Water")
+    {
+        string waterNames[3] = {" Aqua Strike", " Splash", " Spray"};
+        return waterNames[chance_];
+    }
+    else if (objectMonster_ -> getType() == "Wind")
+    {
+         string windNames[3] = { " Breeze", " FeatherSlash", " Gust" };
+         return windNames[chance_];
+    }
+    else
+    {
+        return " Oops";
+    }
+
 }
+
 
 // setters
 void Monster::setName(string name_)
@@ -66,17 +109,9 @@ void Monster::setAttack(double attack_)
 {
     attack = attack_;
 }
-void Monster::setSpecialAttack(double special_attack_)
+void Monster::setHealth(double health_)
 {
-    special_attack = special_attack_;
-}
-void Monster::setDefend(double defend_)
-{
-    defend = defend_;
-}
-void Monster::setHP(double hp_)
-{
-    hp = hp_;
+    health = health_;
 }
 
 // iostream overload
@@ -89,10 +124,9 @@ ostream& operator <<(ostream& out, const Monster& objectMonster_)
 
     out << "          Name: "<< objectMonster_.getName() << endl;
     out << "          Type: " <<  objectMonster_.getType() << "\n";
-    out << "            HP: "<< objectMonster_.getHP() << "\n";
+    out << "            HP: "<< objectMonster_.getHealth() << "/" << objectMonster_.getMAX_HEALTH() << "\n";
     out << "        Attack: "<< objectMonster_.getAttack() << "\n";
-    out << "Special Attack: "<< objectMonster_.getSpecialAttack() << "\n";
-    out << "       Defense: "<< objectMonster_.getDefend() << "\n";
 
     return out;
 }
+

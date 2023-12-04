@@ -56,6 +56,26 @@ void Player::removeMonster(Monster objectMonster_)
     }
 }
 
+void Player::updateMonsterInVector(Monster* objectMonster_)
+{
+
+    bool found = false;
+    for(int i = 0; i < monsterInventory.size(); i++)
+    {
+        if(monsterInventory[i] == *objectMonster_)
+        {
+            monsterInventory[i] = *objectMonster_;
+            break;
+        }
+    }
+
+
+    if(found == false)
+    {
+        cout << "ERROR IN SWITCHING DUCKS" << endl;
+    }
+}
+
 void Player::displayAllMonster()
 {
     for(int i = 0; i < monsterInventory.size(); i++)

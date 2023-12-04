@@ -18,8 +18,8 @@ public:
     ~Battleground();
 
     // member functions
+    bool battleCriticalHit(int chance_);
     double getBattleAttack(Monster* objectMonsterAttack_, Monster* objectMonsterDefend_);
-    double getBattleSpecialAttack(Monster* objectMonsterAttack_, Monster* objectMonsterDefend_);
 
     void choosePlayerMonsterToFight();
     void chooseOpponentMonsterToFight();
@@ -29,10 +29,6 @@ public:
     void battleCheck();
     bool battleResult();
     void battleInventory(int sizeMonster);
-
-    bool battleCriticalHit();
-
-
 };
 
 #endif // BATTLEGROUND_HPP_INCLUDED

@@ -21,11 +21,14 @@ public:
     void setName(string name_);
 
     // indexing
+    void updateMonsterInVector(Monster* objectMonster_);
     void addMonster(Monster objectMonster_);
     void removeMonster(Monster objectMonster_);
     void displayAllMonster();
     Monster selectMonster(int index_);
     int getSize() const;
+
+
 };
 
 #endif // PLAYER_HPP_INCLUDED
