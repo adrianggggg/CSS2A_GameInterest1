@@ -20,21 +20,23 @@ Monster::Monster(string name_, string type_)
 {
     name = name_;
     type = type_;
-    MAX_HEALTH = 100;
 
     if(type == "Water")
     {
+        MAX_HEALTH = 175;
         health = 175;
         attack = 25;
     }
     else if(type == "Fire")
     {
+        MAX_HEALTH = 100;
         health = 100;
         attack = 40;
     }
     
     else if(type == "Wind")
     {
+        MAX_HEALTH = 30;
         health = 30;
         attack = 95;
     }

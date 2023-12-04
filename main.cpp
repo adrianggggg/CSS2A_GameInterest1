@@ -90,12 +90,12 @@ void opponentRandomizer(Opponent objectOpponent_[])
 {
     Monster arrayMonster[6] =
     {
-        Monster("Aeroquack", "Wind", 20, 30, 10),
-        Monster("Zephyrtail", "Wind", 25, 25, 20),
-        Monster("Aquaquack", "Water", 20, 25, 20),
-        Monster("Torrentail", "Water", 30, 20, 10),
-        Monster("Saxoheat", "Fire", 20, 20, 5),
-        Monster("Charyuga", "Fire", 20, 20, 10)
+        Monster("Aeroquack", "Wind"),
+        Monster("Zephyrtail", "Wind"),
+        Monster("Aquaquack", "Water"),
+        Monster("Torrentail", "Water"),
+        Monster("Saxoheat", "Fire"),
+        Monster("Charyuga", "Fire")
     };
 
     string name[5] = { "Jerry", "Rick", "Morty", "Summer", "Beth" };
@@ -138,12 +138,12 @@ void monsterSelection(Player& objectPlayer_)
     const int ARRAY_MONSTER_SIZE = 6; // easily add more monsters
     Monster arrayMonster[ARRAY_MONSTER_SIZE] =
     {
-        Monster("Aeroquack", "Wind", 20, 30, 10),
-        Monster("Zephyrtail", "Wind", 25, 25, 20),
-        Monster("Aquaquack", "Water", 20, 25, 20),
-        Monster("Torrentail", "Water", 30, 20, 10),
-        Monster("Saxoheat", "Fire", 20, 20, 5),
-        Monster("Charyuga", "Fire", 20, 20, 10)
+        Monster("Aeroquack", "Wind"),
+        Monster("Zephyrtail", "Wind"),
+        Monster("Aquaquack", "Water"),
+        Monster("Torrentail", "Water"),
+        Monster("Saxoheat", "Fire"),
+        Monster("Charyuga", "Fire")
     };
 
     Monster* objectMonsterPtr_ = new Monster();

@@ -36,7 +36,6 @@ Battleground::~Battleground()
 bool Battleground::battleCriticalHit(int chance_)
 {
     srand(time(0));
-    int chance = chance_;
     int critRoll = rand() % 100 + 1;  // from 1 to 100.
     if(critRoll <= chance_) {return true;} // (<= 10) is 10%, (<= 20) is 20%
     else {return false;}
@@ -49,7 +48,7 @@ double Battleground::getBattleAttack(Monster* objectMonsterAttack_, Monster* obj
     const double CRIT_DAMAGE_MULTIPLIER = 0.30; // (* 0.30) is 30% base damage
 
     // "Water vs. Fire:" indicates to the player that monster types is accounted for and matters
-    cout << objectMonsterAttack_ -> getType() << " vs. " << objectMonsterDefend_ -> getType() << ":" << endl;
+    cout << objectMonsterAttack_ -> getType() << " vs. " << objectMonsterDefend_ -> getType() << ": ";
 
     // Really effective = +10% damage
     if
@@ -59,7 +58,7 @@ double Battleground::getBattleAttack(Monster* objectMonsterAttack_, Monster* obj
         (objectMonsterAttack_ -> getType() == "Wind" && objectMonsterDefend_ -> getType() == "Water")
     )
     {
-        cout << "Really effective! (+10% base damage)" << endl << endl;
+        cout << "Really effective! (+10% base damage)" << endl;
         total_damage = objectMonsterAttack_ -> getAttack() * 1.10; // +10% base damage
         if(battleCriticalHit(30)) // 30% chance to crit
         {
@@ -76,7 +75,7 @@ double Battleground::getBattleAttack(Monster* objectMonsterAttack_, Monster* obj
         (objectMonsterAttack_ -> getType() == "Wind" && objectMonsterDefend_ -> getType() == "Wind")
     )
     {
-        cout << "Same type! (base damage)" << endl << endl;
+        cout << "Same type! (base damage)" << endl;
         total_damage = objectMonsterAttack_ -> getAttack(); // base damage
         if(battleCriticalHit(15)) // 15% chance to crit
         {
@@ -93,7 +92,7 @@ double Battleground::getBattleAttack(Monster* objectMonsterAttack_, Monster* obj
         (objectMonsterAttack_ -> getType() == "Wind" && objectMonsterDefend_ -> getType() == "Fire")
     )
     {
-        cout << "Not effective... (-10% base damage)" << endl << endl;
+        cout << "Not effective... (-10% base damage)" << endl;
         total_damage = objectMonsterAttack_ -> getAttack() * 0.90; // -10% base damage
         if(battleCriticalHit(10)) // 10% chance to crit
         {
@@ -109,7 +108,7 @@ double Battleground::getBattleAttack(Monster* objectMonsterAttack_, Monster* obj
         return 1;
     }
 
-    cout << total_damage << " damage dealt!" << endl;
+    cout << total_damage << " damage dealt!" << endl << endl;
     return total_damage;
 }
 
@@ -173,6 +172,9 @@ void Battleground::battleLoop()
             cout << objectPlayerPtr -> getName() << " SWITCHES out " << objectPlayerMonsterPtr_-> getName() << endl;
             player_switched = true;
             choosePlayerMonsterToFight();
+            break;
+        case 4: // information
+            cout << "information" << endl;
             break;
         default:
             cout << "Not possible!" << endl;
