@@ -245,22 +245,6 @@ void Battleground::battleInventory(int sizeMonster)
     }
 }
 
-/*
-bool Battleground::battleCriticalHit()
-{
-    srand(time(0));
-
-    bool critChance_[10];
-
-    for(int i = 0; i < 10; i++)
-    {
-        critChance_[i] = rand() % 2;
-    }
-
-    return critChance_[rand() % 10];
-}
-*/
-
 bool Battleground::battleCriticalHit()
 {
     srand(time(0));
