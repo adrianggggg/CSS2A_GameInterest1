@@ -174,7 +174,7 @@ void Battleground::battleLoop()
             choosePlayerMonsterToFight();
             break;
         case 4: // information
-            cout << "information" << endl;
+            cout << "[INFORMATION PLACEHOLDER]" << endl;
             break;
         default:
             cout << "Not possible!" << endl;
