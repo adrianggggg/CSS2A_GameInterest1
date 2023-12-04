@@ -62,7 +62,7 @@ double Battleground::getBattleAttack(Monster* objectMonsterAttack_, Monster* obj
         total_damage = objectMonsterAttack_ -> getAttack() * 1.10; // +10% base damage
         if(battleCriticalHit(30)) // 30% chance to crit
         {
-            cout << " Critical hit!" << endl;
+            cout << "Critical hit!" << endl;
             total_damage += objectMonsterAttack_ -> getAttack() * CRIT_DAMAGE_MULTIPLIER;
         } 
     }
@@ -79,7 +79,7 @@ double Battleground::getBattleAttack(Monster* objectMonsterAttack_, Monster* obj
         total_damage = objectMonsterAttack_ -> getAttack(); // base damage
         if(battleCriticalHit(15)) // 15% chance to crit
         {
-            cout << " Critical hit!" << endl;
+            cout << "Critical hit!" << endl;
             total_damage += objectMonsterAttack_ -> getAttack() * CRIT_DAMAGE_MULTIPLIER;
         }
     }
@@ -96,7 +96,7 @@ double Battleground::getBattleAttack(Monster* objectMonsterAttack_, Monster* obj
         total_damage = objectMonsterAttack_ -> getAttack() * 0.90; // -10% base damage
         if(battleCriticalHit(10)) // 10% chance to crit
         {
-            cout << " Critical hit!" << endl;
+            cout << "Critical hit!" << endl;
             total_damage += objectMonsterAttack_ -> getAttack() * CRIT_DAMAGE_MULTIPLIER;
         } 
     }
@@ -209,7 +209,7 @@ void Battleground::battleLoop()
         }
 
         // halt interface so the player can summarize turn before next screen is created
-        cout << "Enter [y] to continue...";
+        cout << "Enter [y] to continue: ";
         char input;
         cin >> input; // can be any letter
     }
