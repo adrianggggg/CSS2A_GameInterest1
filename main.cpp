@@ -50,7 +50,7 @@ int main()
 
         battleTime.battleLoop();
 
-        if(battleTime.battleResult() == true) // if(battleTime.battleResult())
+        if(battleTime.battleResult() == true)
         {
             victoryCount++;
             if(loopingCount == 5)
@@ -60,7 +60,7 @@ int main()
             }
             cout << "Continue... Y or N? ";
 
-            if(yes_noSelection() == true) // if(yes_noSelection())
+            if(yes_noSelection() == true)
             {
                 cout << "You heal and tend to your party..." << endl << endl;
                 loopingCount++;
@@ -117,13 +117,13 @@ void opponentRandomizer(Opponent objectOpponent_[])
 
 void titleScreen()
 {
-    // if we do pvp encounter we can have the user select which `game mode` here.
     cout << "MONSTERS" << endl << endl;
 }
 
 void nameSelection(Player& objectPlayer_)
 {
     string userName_;
+
 
     cout << "Enter your character's name: ";
     getline(cin, userName_);
@@ -138,8 +138,7 @@ void monsterSelection(Player& objectPlayer_)
     int userChoice_;
     string numberLetter[3] = { "first", "second", "third" };
 
-    const int ARRAY_MONSTER_SIZE = 6; // easily add more monsters
-    Monster arrayMonster[ARRAY_MONSTER_SIZE] =
+    Monster arrayMonster[6] =
     {
         Monster("Aeroquack", "Wind", 20, 30, 10),
         Monster("Zephyrtail", "Wind", 25, 25, 20),
@@ -151,7 +150,7 @@ void monsterSelection(Player& objectPlayer_)
 
     Monster* objectMonsterPtr_ = new Monster();
 
-    for(int i = 0; i < ARRAY_MONSTER_SIZE; i++)
+    for(int i = 0; i < 6; i++)
     {
         cout << "[" << i + 1 << "]" << endl;
         cout << arrayMonster[i] << endl;
@@ -165,16 +164,16 @@ void monsterSelection(Player& objectPlayer_)
         cout << "Enter the [#] of your " << numberLetter[userGate_] << " monster: ";
         cin >> userChoice_;
 
-        if(userChoice_ > 0 && userChoice_ <= ARRAY_MONSTER_SIZE) // from 1 to ARRAY_MONSTERS_SIZE
+        if(userChoice_ > 0 && userChoice_ <= 6)
         {
             *objectMonsterPtr_ = arrayMonster[userChoice_ - 1];
             objectPlayer_.addMonster(*objectMonsterPtr_);
 
             userGate_++;
         }
-        else // not valid input
+        else
         {
-            cout << "Not possible! Type a number from 1 to " << ARRAY_MONSTER_SIZE << endl;
+            cout << "Not possible!" << endl;
         }
     }
 
@@ -198,7 +197,7 @@ int monsterSpecificSelection(Player& objectPlayer_)
         }
         else
         {
-            cout << "Not possible! Type a number from 1 to " << objectPlayer_.getSize() << endl;
+            cout << "Not possible!" << endl;
         }
     }
 }
