@@ -142,8 +142,8 @@ void Battleground::battleInterface()
     cout << "Health: " << objectPlayerMonsterPtr_ -> getHealth() << endl;
     cout << "[1] Peck (attack): " << objectPlayerMonsterPtr_ -> getAttack() << endl;
     cout << "[2] Roost (heal): " << objectPlayerMonsterPtr_ -> getMAX_HEALTH() * 0.4 << endl;
-    cout << "[3] Switch Ducks " << objectPlayerMonsterPtr_ -> getDefend() << endl;
-    cout << "[4] Information " << objectPlayerMonsterPtr_ -> getDefend() << endl;
+    cout << "[3] Switch Ducks " << endl;
+    cout << "[4] Information about moves " << endl;
     cout << "***************************************************************" << endl << endl;
 }
 
