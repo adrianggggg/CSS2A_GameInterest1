@@ -32,21 +32,26 @@ Battleground::~Battleground()
     delete objectOpponentMonsterPtr_;
 }
 
-// getters/modifiers
+// critical hit roll
+bool Battleground::battleCriticalHit(int chance_)
+{
+    srand(time(0));
+    int chance = chance_;
+    int critRoll = rand() % 100 + 1;  // from 1 to 100.
+    if(critRoll <= chance_) {return true;} // (<= 10) is 10%, (<= 20) is 20%
+    else {return false;}
+}
+
+// damage & type advantage calculations
 double Battleground::getBattleAttack(Monster* objectMonsterAttack_, Monster* objectMonsterDefend_)
 {
+    double total_damage = 0; // damage to return
+    const double CRIT_DAMAGE_MULTIPLIER = 0.30; // (* 0.30) is 30% base damage
+
     // "Water vs. Fire:" indicates to the player that monster types is accounted for and matters
     cout << objectMonsterAttack_ -> getType() << " vs. " << objectMonsterDefend_ -> getType() << ":" << endl;
 
-    // Calculate `critical hit` damage to add later
-    int critDamage = 0;
-    if(battleCriticalHit()) 
-    {
-        cout << " Critical hit!" << endl << endl;
-        critDamage = objectMonsterAttack_ -> getAttack() * 0.35; // (* 0.35) is 35% base damage
-    } 
-
-    // Really effective +10% damage
+    // Really effective = +10% damage
     if
     (
         (objectMonsterAttack_ -> getType() == "Water" && objectMonsterDefend_ -> getType() == "Fire") ||
@@ -54,11 +59,16 @@ double Battleground::getBattleAttack(Monster* objectMonsterAttack_, Monster* obj
         (objectMonsterAttack_ -> getType() == "Wind" && objectMonsterDefend_ -> getType() == "Water")
     )
     {
-        cout << " Really effective!" << endl << endl;
-        return (objectMonsterAttack_ -> getAttack() * 1.10 + critDamage);
+        cout << "Really effective! (+10% base damage)" << endl << endl;
+        total_damage = objectMonsterAttack_ -> getAttack() * 1.10; // +10% base damage
+        if(battleCriticalHit(30)) // 30% chance to crit
+        {
+            cout << " Critical hit!" << endl << endl;
+            total_damage += objectMonsterAttack_ -> getAttack() * CRIT_DAMAGE_MULTIPLIER;
+        } 
     }
 
-    // Same type -70% damage
+    // Same type = base damage
     else if
     (
         (objectMonsterAttack_ -> getType() == "Water" && objectMonsterDefend_ -> getType() == "Water") ||
@@ -66,11 +76,16 @@ double Battleground::getBattleAttack(Monster* objectMonsterAttack_, Monster* obj
         (objectMonsterAttack_ -> getType() == "Wind" && objectMonsterDefend_ -> getType() == "Wind")
     )
     {
-        cout << " Same type!" << endl << endl;
-        return (objectMonsterAttack_ -> getAttack() * 0.30 + critDamage);
+        cout << "Same type! (base damage)" << endl << endl;
+        total_damage = objectMonsterAttack_ -> getAttack(); // base damage
+        if(battleCriticalHit(15)) // 15% chance to crit
+        {
+            cout << " Critical hit!" << endl << endl;
+            total_damage += objectMonsterAttack_ -> getAttack() * CRIT_DAMAGE_MULTIPLIER;
+        }
     }
 
-    // Not effective -60% damage
+    // Not effective = -10% damage
     else if
     (
         (objectMonsterAttack_ -> getType() == "Water" && objectMonsterDefend_ -> getType() == "Wind") ||
@@ -78,8 +93,13 @@ double Battleground::getBattleAttack(Monster* objectMonsterAttack_, Monster* obj
         (objectMonsterAttack_ -> getType() == "Wind" && objectMonsterDefend_ -> getType() == "Fire")
     )
     {
-        cout << " Not effective..." << endl << endl;
-        return (objectMonsterAttack_ -> getAttack() * 0.40 + critDamage);
+        cout << "Not effective... (-10% base damage)" << endl << endl;
+        total_damage = objectMonsterAttack_ -> getAttack() * 0.90; // -10% base damage
+        if(battleCriticalHit(10)) // 10% chance to crit
+        {
+            cout << " Critical hit!" << endl << endl;
+            total_damage += objectMonsterAttack_ -> getAttack() * CRIT_DAMAGE_MULTIPLIER;
+        } 
     }
 
     // error code
@@ -88,21 +108,9 @@ double Battleground::getBattleAttack(Monster* objectMonsterAttack_, Monster* obj
         cout << "DEBUG: Error with Battleground::getBattleAttack()" << endl;
         return 1;
     }
-}
 
-double Battleground::getBattleSpecialAttack(Monster* objectMonsterAttack_, Monster* objectMonsterDefend_)
-{
-    if(battleCriticalHit() == true)
-    {
-        cout << " Critical hit!" << endl << endl;
-        //return (objectMonsterAttack_ -> getSpecialAttack())*1.3 + objectMonsterAttack_ -> getSpecialAttack(); // this is 230% damage. Was +30% the intent?
-        return (objectMonsterAttack_ -> getSpecialAttack() * 1.35); // this is +35% damage matching damage above. we should abstract crit into a function maybe?
-    }
-    else
-    {
-        cout << endl << endl;
-        return objectMonsterAttack_ -> getSpecialAttack();
-    }
+    cout << total_damage << " damage dealt!" << endl;
+    return total_damage;
 }
 
 void Battleground::choosePlayerMonsterToFight()
@@ -112,6 +120,7 @@ void Battleground::choosePlayerMonsterToFight()
 
     cout << objectPlayerPtr -> getName() << " chooses " << objectPlayerMonsterPtr_ -> getName() << "!" << endl << endl;
 }
+
 void Battleground::chooseOpponentMonsterToFight()
 {
     objectOpponentMonsterPtr_ = new Monster(objectOpponentPtr -> Opponent::selectMonster());
@@ -123,17 +132,18 @@ void Battleground::battleInterface()
 {
     cout << "***************************************************************" << endl;
     cout << "                                "; battleInventory(objectOpponentPtr -> getSize()); cout << endl;
-    cout << "                                Monster: " << objectOpponentMonsterPtr_ -> getName() << endl;
+    cout << "                                Duck: " << objectOpponentMonsterPtr_ -> getName() << endl;
     cout << "                                Type: " << objectOpponentMonsterPtr_ -> getType() << endl;
-    cout << "                                HP: " << objectOpponentMonsterPtr_ -> getHP() << endl;
+    cout << "                                Health: " << objectOpponentMonsterPtr_ -> getHealth() << endl;
 
     battleInventory(objectPlayerPtr -> getSize()); cout << endl;
-    cout << "Monster: " << objectPlayerMonsterPtr_ -> getName() << endl;
+    cout << "Duck: " << objectPlayerMonsterPtr_ -> getName() << endl;
     cout << "Type: " << objectPlayerMonsterPtr_ -> getType() << endl;
-    cout << "HP: " << objectPlayerMonsterPtr_ -> getHP() << endl;
-    cout << "[1] Attack: " << objectPlayerMonsterPtr_ -> getAttack() << endl;
-    cout << "[2] Special Attack: " << objectPlayerMonsterPtr_ -> getSpecialAttack() << endl;
-    cout << "[3] Defend: " << objectPlayerMonsterPtr_ -> getDefend() << endl;
+    cout << "Health: " << objectPlayerMonsterPtr_ -> getHealth() << endl;
+    cout << "[1] Peck (attack): " << objectPlayerMonsterPtr_ -> getAttack() << endl;
+    cout << "[2] Roost (heal): " << objectPlayerMonsterPtr_ -> getMAX_HEALTH() * 0.4 << endl;
+    cout << "[3] Switch Ducks " << objectPlayerMonsterPtr_ -> getDefend() << endl;
+    cout << "[4] Information " << objectPlayerMonsterPtr_ -> getDefend() << endl;
     cout << "***************************************************************" << endl << endl;
 }
 
@@ -141,51 +151,54 @@ void Battleground::battleLoop()
 {
     while(objectPlayerPtr -> getSize() > 0 && objectOpponentPtr -> getSize() > 0)
     {
+        bool player_blocked = false;
+        bool player_switched = false;
+
+        // Player's turn to battle
         battleInterface();
         switch(battleSelection()) // battleSelection() defined in main, could it be moved battleground class for simplicity?
         {
-        case 1:
-            cout << objectPlayerPtr -> getName() << "'s " << objectPlayerMonsterPtr_-> getName() << " ATTACKS!";
-            objectOpponentMonsterPtr_ -> setHP(objectOpponentMonsterPtr_ -> getHP() - getBattleAttack(objectPlayerMonsterPtr_, objectOpponentMonsterPtr_));
+        case 1: // attack
+            cout << objectPlayerPtr -> getName() << "'s " << objectPlayerMonsterPtr_-> getName() << " uses " << objectPlayerMonsterPtr_ -> getAttackName() << "!" << endl;
+            objectOpponentMonsterPtr_ -> setHealth(objectOpponentMonsterPtr_ -> getHealth() - getBattleAttack(objectPlayerMonsterPtr_, objectOpponentMonsterPtr_));
             battleCheck();
             break;
-        case 2:
-            cout << objectPlayerPtr -> getName() << "'s " << objectPlayerMonsterPtr_-> getName() << " uses their SPECIAL ATTACK!";
-            objectOpponentMonsterPtr_ -> setHP(objectOpponentMonsterPtr_ -> getHP() - getBattleSpecialAttack(objectPlayerMonsterPtr_, objectOpponentMonsterPtr_));
-            battleCheck();
-            break;
-        case 3:
+        case 2: // heal
             cout << objectPlayerPtr -> getName() << "'s" " REINFORCES their health!" << endl << endl;
-            objectPlayerMonsterPtr_ -> setHP(objectPlayerMonsterPtr_ -> getHP() + objectPlayerMonsterPtr_ -> getDefend());
+            objectPlayerMonsterPtr_ -> setHealth((objectPlayerMonsterPtr_ -> getMAX_HEALTH() * 0.40) + objectPlayerMonsterPtr_ -> getHealth()); // +40% Max health;
+            player_blocked = rand() % 2;  // 50% chance to block next attack;
             battleCheck();
+            break;
+        case 3: // switch
+            cout << objectPlayerPtr -> getName() << " SWITCHES out " << objectPlayerMonsterPtr_-> getName() << endl;
+            player_switched = true;
+            choosePlayerMonsterToFight();
             break;
         default:
             cout << "Not possible!" << endl;
             break;
         }
 
-        if(objectPlayerPtr -> getSize() == 0 || objectOpponentPtr -> getSize() == 0)
-        {
-            break;
-        }
+        // if player is defeated, then skip opponents turn and end this loop
+        if(objectPlayerPtr -> getSize() == 0 || objectOpponentPtr -> getSize() == 0) {break;}
 
-        //battleInterface();
-        // !check main branch I think this was updated!
+        // Opponent's turn to battle
         switch(objectOpponentPtr -> randomChoice())
         {
         case 1:
-            cout << objectOpponentPtr -> getName() << "'s " << objectOpponentMonsterPtr_-> getName() << " ATTACKS!";
-            objectPlayerMonsterPtr_ -> setHP(objectPlayerMonsterPtr_ -> getHP() - getBattleAttack(objectOpponentMonsterPtr_, objectPlayerMonsterPtr_));
-            battleCheck();
+            cout << objectOpponentPtr -> getName() << "'s " << objectOpponentMonsterPtr_-> getName() << " uses " << objectOpponentMonsterPtr_ -> getAttackName() << "!" << endl;
+
+            if(player_blocked) {cout << "The attack was BLOCKED!" << endl;}
+            else if(player_switched) {cout << "The attack MISSED!" << endl;}
+            else
+            {
+                objectPlayerMonsterPtr_ -> setHealth(objectPlayerMonsterPtr_ -> getHealth() - getBattleAttack(objectOpponentMonsterPtr_, objectPlayerMonsterPtr_));
+                battleCheck();
+            }
             break;
         case 2:
-            cout << objectOpponentPtr -> getName() << "'s " << objectOpponentMonsterPtr_-> getName() << " uses their SPECIAL ATTACK!";
-            objectPlayerMonsterPtr_ -> setHP(objectPlayerMonsterPtr_ -> getHP() - getBattleSpecialAttack(objectOpponentMonsterPtr_, objectPlayerMonsterPtr_));
-            battleCheck();
-            break;
-        case 3:
-            objectOpponentMonsterPtr_ -> setHP(objectOpponentMonsterPtr_ -> getHP() + objectOpponentMonsterPtr_ -> getDefend());
             cout << objectOpponentPtr -> getName() << "'s" " REINFORCES their health!" << endl << endl;
+            objectOpponentMonsterPtr_ -> setHealth((objectOpponentMonsterPtr_ -> getMAX_HEALTH() * 0.40) + objectOpponentMonsterPtr_ -> getHealth()); // +40% Max health;
             battleCheck();
             break;
         default:
@@ -197,7 +210,7 @@ void Battleground::battleLoop()
 
 void Battleground::battleCheck()
 {
-    if(objectPlayerMonsterPtr_ -> getHP() <= 0)
+    if(objectPlayerMonsterPtr_ -> getHealth() <= 0)
     {
         cout << "Oh! " << objectPlayerPtr -> getName() << "'s "<< objectPlayerMonsterPtr_ -> getName() << " is down!" << endl << endl;
 
@@ -208,9 +221,7 @@ void Battleground::battleCheck()
             choosePlayerMonsterToFight();
         }
     }
-    // is there any case where BOTH hp will be 0 on the same turn? If so you can fix this by removing the else. 
-    // For now I don't see any issues unless we add delayed damage like poison/ranged attack or something.
-    else if(objectOpponentMonsterPtr_ -> getHP() <= 0)
+    else if(objectOpponentMonsterPtr_ -> getHealth() <= 0)
     {
         cout << "Oh! " << objectOpponentPtr -> getName() << "'s "<< objectOpponentMonsterPtr_ -> getName() <<" is down!" << endl << endl;
 
@@ -243,12 +254,4 @@ void Battleground::battleInventory(int sizeMonster)
     {
         cout << "o ";
     }
-}
-
-bool Battleground::battleCriticalHit()
-{
-    srand(time(0));
-    int critChance = rand() % 100 + 1;  // from 1 to 100.
-    if(critChance <= 10) {return true;} // (<= 10) is 10%, (<= 20) is 20%
-    else {return false;}
 }

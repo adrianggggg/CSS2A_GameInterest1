@@ -9,7 +9,9 @@ private:
     double attack;
     double special_attack;
     double defend;
-    double hp;
+    double health;
+    double MAX_HEALTH; // cant use const in a constructor I guess but we should pretend it is
+
 public:
     Monster();
     Monster(std::string name_, std::string type_, double attack_, double special_attack_, double defend);
@@ -19,14 +21,15 @@ public:
     double getAttack() const;
     double getSpecialAttack() const;
     double getDefend() const;
-    double getHP() const;
+    double getHealth() const;
+    double getMAX_HEALTH() const;
 
     void setName(std::string name_);
     void setType(std::string type_);
     void setAttack(double attack_);
     void setSpecialAttack(double special_attack_);
     void setDefend(double defend_);
-    void setHP(double hp_);
+    void setHealth(double health_);
 
     bool operator ==(const Monster& objectMonster_);
 

@@ -14,7 +14,8 @@ Monster::Monster()
     attack = 0;
     special_attack = 0;
     defend = 0;
-    hp = 0;
+    health = 0;
+    MAX_HEALTH = 0;
 }
 
 Monster::Monster(string name_, string type_, double attack_, double special_attack_, double defend_)
@@ -24,7 +25,8 @@ Monster::Monster(string name_, string type_, double attack_, double special_atta
     attack = attack_;
     special_attack = special_attack_;
     defend = defend_;
-    hp = 100;
+    health = 100;
+    MAX_HEALTH = 100;
 }
 
 // getters
@@ -48,9 +50,13 @@ double Monster::getDefend() const
 {
     return defend;
 }
-double Monster::getHP() const
+double Monster::getHealth() const
 {
-    return hp;
+    return health;
+}
+double Monster::getMAX_HEALTH() const
+{
+    return MAX_HEALTH;
 }
 
 // setters
@@ -74,9 +80,9 @@ void Monster::setDefend(double defend_)
 {
     defend = defend_;
 }
-void Monster::setHP(double hp_)
+void Monster::setHealth(double health_)
 {
-    hp = hp_;
+    health = health_;
 }
 
 // iostream overload
@@ -89,7 +95,7 @@ ostream& operator <<(ostream& out, const Monster& objectMonster_)
 
     out << "          Name: "<< objectMonster_.getName() << endl;
     out << "          Type: " <<  objectMonster_.getType() << "\n";
-    out << "            HP: "<< objectMonster_.getHP() << "\n";
+    out << "            HP: "<< objectMonster_.getHealth() << "\n";
     out << "        Attack: "<< objectMonster_.getAttack() << "\n";
     out << "Special Attack: "<< objectMonster_.getSpecialAttack() << "\n";
     out << "       Defense: "<< objectMonster_.getDefend() << "\n";
