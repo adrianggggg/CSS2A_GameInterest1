@@ -62,7 +62,7 @@ double Battleground::getBattleAttack(Monster* objectMonsterAttack_, Monster* obj
         total_damage = objectMonsterAttack_ -> getAttack() * 1.10; // +10% base damage
         if(battleCriticalHit(30)) // 30% chance to crit
         {
-            cout << " Critical hit!" << endl << endl;
+            cout << " Critical hit!" << endl;
             total_damage += objectMonsterAttack_ -> getAttack() * CRIT_DAMAGE_MULTIPLIER;
         } 
     }
@@ -79,7 +79,7 @@ double Battleground::getBattleAttack(Monster* objectMonsterAttack_, Monster* obj
         total_damage = objectMonsterAttack_ -> getAttack(); // base damage
         if(battleCriticalHit(15)) // 15% chance to crit
         {
-            cout << " Critical hit!" << endl << endl;
+            cout << " Critical hit!" << endl;
             total_damage += objectMonsterAttack_ -> getAttack() * CRIT_DAMAGE_MULTIPLIER;
         }
     }
@@ -96,7 +96,7 @@ double Battleground::getBattleAttack(Monster* objectMonsterAttack_, Monster* obj
         total_damage = objectMonsterAttack_ -> getAttack() * 0.90; // -10% base damage
         if(battleCriticalHit(10)) // 10% chance to crit
         {
-            cout << " Critical hit!" << endl << endl;
+            cout << " Critical hit!" << endl;
             total_damage += objectMonsterAttack_ -> getAttack() * CRIT_DAMAGE_MULTIPLIER;
         } 
     }
@@ -117,14 +117,14 @@ void Battleground::choosePlayerMonsterToFight()
     objectPlayerPtr -> displayAllMonster();
     objectPlayerMonsterPtr_ = new Monster(objectPlayerPtr -> selectMonster(monsterSpecificSelection(*objectPlayerPtr)));
 
-    cout << objectPlayerPtr -> getName() << " chooses " << objectPlayerMonsterPtr_ -> getName() << "!" << endl << endl;
+    cout << objectPlayerPtr -> getName() << " chooses " << objectPlayerMonsterPtr_ -> getName() << "!" << endl;
 }
 
 void Battleground::chooseOpponentMonsterToFight()
 {
     objectOpponentMonsterPtr_ = new Monster(objectOpponentPtr -> Opponent::selectMonster());
 
-    cout << objectOpponentPtr -> getName() << " chooses " << objectOpponentMonsterPtr_ -> getName() << "!" << endl << endl;
+    cout << objectOpponentPtr -> getName() << " chooses " << objectOpponentMonsterPtr_ -> getName() << "!" << endl;
 }
 
 void Battleground::battleInterface()
@@ -163,7 +163,7 @@ void Battleground::battleLoop()
             battleCheck();
             break;
         case 2: // heal
-            cout << objectPlayerPtr -> getName() << "'s" " REINFORCES their health!" << endl << endl;
+            cout << objectPlayerPtr -> getName() << "'s" " REINFORCES their health!" << endl;
             objectPlayerMonsterPtr_ -> setHealth((objectPlayerMonsterPtr_ -> getMAX_HEALTH() * 0.40) + objectPlayerMonsterPtr_ -> getHealth()); // +40% Max health;
             player_blocked = rand() % 2;  // 50% chance to block next attack;
             battleCheck();
@@ -199,14 +199,19 @@ void Battleground::battleLoop()
             }
             break;
         case 2:
-            cout << objectOpponentPtr -> getName() << "'s" " REINFORCES their health!" << endl << endl;
+            cout << objectOpponentPtr -> getName() << "'s" " REINFORCES their health!" << endl;
             objectOpponentMonsterPtr_ -> setHealth((objectOpponentMonsterPtr_ -> getMAX_HEALTH() * 0.40) + objectOpponentMonsterPtr_ -> getHealth()); // +40% Max health;
             battleCheck();
             break;
         default:
-            cout << "Not possible!" << endl << endl;
+            cout << "Not possible!" << endl;
             break;
         }
+
+        // halt interface so the player can summarize turn before next screen is created
+        cout << "Enter [y] to continue...";
+        char input;
+        cin >> input; // can be any letter
     }
 }
 
@@ -214,7 +219,7 @@ void Battleground::battleCheck()
 {
     if(objectPlayerMonsterPtr_ -> getHealth() <= 0)
     {
-        cout << "Oh! " << objectPlayerPtr -> getName() << "'s "<< objectPlayerMonsterPtr_ -> getName() << " is down!" << endl << endl;
+        cout << "Oh! " << objectPlayerPtr -> getName() << "'s "<< objectPlayerMonsterPtr_ -> getName() << " is down!" << endl;
 
         objectPlayerPtr -> removeMonster(*objectPlayerMonsterPtr_);
 
