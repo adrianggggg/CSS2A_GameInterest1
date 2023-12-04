@@ -158,7 +158,7 @@ void Battleground::battleLoop()
         switch(battleSelection()) // battleSelection() defined in main, could it be moved battleground class for simplicity?
         {
         case 1: // attack
-            cout << objectPlayerPtr -> getName() << "'s " << objectPlayerMonsterPtr_-> getName() << " uses " << objectPlayerMonsterPtr_ -> getAttackName() << "!" << endl;
+            cout << objectPlayerPtr -> getName() << "'s " << objectPlayerMonsterPtr_-> getName() << " uses " << "objectPlayerMonsterPtr_ -> getAttackName()" << "!" << endl;
             objectOpponentMonsterPtr_ -> setHealth(objectOpponentMonsterPtr_ -> getHealth() - getBattleAttack(objectPlayerMonsterPtr_, objectOpponentMonsterPtr_));
             battleCheck();
             break;
@@ -188,7 +188,7 @@ void Battleground::battleLoop()
         switch(objectOpponentPtr -> randomChoice())
         {
         case 1:
-            cout << objectOpponentPtr -> getName() << "'s " << objectOpponentMonsterPtr_-> getName() << " uses " << objectOpponentMonsterPtr_ -> getAttackName() << "!" << endl;
+            cout << objectOpponentPtr -> getName() << "'s " << objectOpponentMonsterPtr_-> getName() << " uses " << "objectOpponentMonsterPtr_ -> getAttackName()" << "!" << endl;
 
             if(player_blocked) {cout << "The attack was BLOCKED!" << endl;}
             else if(player_switched) {cout << "The attack MISSED!" << endl;}
