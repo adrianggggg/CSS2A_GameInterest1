@@ -178,6 +178,7 @@ void Battleground::battleLoop()
             choosePlayerMonsterToFight();
             break;
         case 4: // information
+            player_switched = true;
             cout << "[INFORMATION PLACEHOLDER]" << endl;
             break;
         default:
