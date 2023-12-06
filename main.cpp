@@ -6,7 +6,6 @@
 #include "Player.hpp"
 #include "Battleground.hpp"
 #include "Opponent.hpp"
-#include "main.hpp"
 
 using namespace std;
 

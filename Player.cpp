@@ -3,8 +3,6 @@
 #include "Monster.hpp"
 #include "Player.hpp"
 
-/* Player */
-
 // constructor
 Player::Player()
 {

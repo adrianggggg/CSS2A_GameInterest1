@@ -6,12 +6,34 @@
 #include "Player.hpp"
 #include "Battleground.hpp"
 #include "Opponent.hpp"
-#include "main.hpp"
 
 using namespace std;
 
-/* Battleground */
+namespace mainExtraFunction
+{
+    int monsterSpecificSelection(Player& objectPlayer_)
+    {
+        int userChoice_ = 0;
 
+        while(1)
+        {
+            cout << "Choose [#] a fighter: ";
+            cin >> userChoice_;
+
+            if(userChoice_ > 0 && userChoice_ <= objectPlayer_.getSize())
+            {
+                cout << endl;
+                return userChoice_ - 1;
+            }
+            else
+            {
+                cout << "Not possible! Type a number from 1 to " << objectPlayer_.getSize() << endl;
+            }
+        }
+}
+}
+
+/* Battleground */
 
 // constructors
 Battleground::Battleground()
@@ -129,7 +151,7 @@ double Battleground::getBattleAttack(Monster* objectMonsterAttack_, Monster* obj
 void Battleground::choosePlayerMonsterToFight()
 {
     objectPlayerPtr -> displayAllMonster();
-    objectPlayerMonsterPtr_ = new Monster(objectPlayerPtr -> selectMonster(monsterSpecificSelection(*objectPlayerPtr)));
+    objectPlayerMonsterPtr_ = new Monster(objectPlayerPtr -> selectMonster(mainExtraFunction::monsterSpecificSelection(*objectPlayerPtr)));
 
     cout << objectPlayerPtr -> getName() << " chooses " << objectPlayerMonsterPtr_ -> getName() << "!" << endl << endl;
 }

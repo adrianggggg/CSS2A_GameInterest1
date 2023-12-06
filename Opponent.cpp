@@ -1,5 +1,3 @@
-/* Opponent */
-
 #include <iostream>
 #include <vector>
 #include <ctime>

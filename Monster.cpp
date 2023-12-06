@@ -6,8 +6,6 @@
 
 using namespace std;
 
-/* Monster */
-
 // constructor
 Monster::Monster()
 {
