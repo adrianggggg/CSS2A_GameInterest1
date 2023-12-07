@@ -1,3 +1,5 @@
+/* Opponent */
+
 #include <iostream>
 #include <vector>
 #include <ctime>
@@ -9,7 +11,7 @@
 
 using namespace std;
 
-// cosntructor
+// constructor
 Opponent::Opponent() : Player()
 {
 
