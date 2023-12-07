@@ -9,7 +9,7 @@
 
 using namespace std;
 
-namespace mainExtraFunction
+namespace mainExtraFunction     // idk how to import functions from main, but hopefully making a separate namespace works
 {
     int monsterSpecificSelection(Player& objectPlayer_)
     {
@@ -33,8 +33,6 @@ namespace mainExtraFunction
 }
 }
 
-/* Battleground */
-
 // constructors
 Battleground::Battleground()
 {
@@ -47,6 +45,7 @@ Battleground::Battleground(Player objectPlayer_, Opponent objectOpponent_)
     objectOpponentPtr = new Opponent(objectOpponent_);
 }
 
+// destructor
 Battleground::~Battleground()
 {
     delete objectPlayerPtr;
