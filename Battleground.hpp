@@ -15,18 +15,18 @@ public:
     // constructors
     Battleground();
     Battleground(Player objectPlayer_, Opponent objectOpponent_);
+
+    // destructor
     ~Battleground();
 
-    // member functions
-    bool battleCriticalHit(int chance_);
-
+    // unique getters
     double getBattleAttack(Monster* objectMonsterAttack_, Monster* objectMonsterDefend_);
     double getBattleHealth(Monster* objectMonster_);
 
+    // member functions
+    bool battleCriticalHit(int chance_);
     void choosePlayerMonsterToFight();
     void chooseOpponentMonsterToFight();
-
-
     int battleInput();
     void battleLoop();
     void battleInterface();
